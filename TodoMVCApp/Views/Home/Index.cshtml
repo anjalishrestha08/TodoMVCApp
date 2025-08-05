@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 fw-bold">Welcome to TodoMVCApp</h1>
+    <p class="lead text-muted">A simple and elegant way to manage your tasks.</p>
+
+    <div class="mt-4">
+        <a class="btn btn-primary btn-lg px-4" asp-controller="TodoItems" asp-action="Index">
+            <i class="bi bi-list-task"></i> View Todo List
+        </a>
+        <a class="btn btn-outline-secondary btn-lg px-4 ms-2" asp-controller="Home" asp-action="Privacy">
+            <i class="bi bi-shield-lock"></i> Privacy Policy
+        </a>
+    </div>
+</div>
+
+<section class="mt-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <i class="bi bi-check-circle display-3 text-success"></i>
+            <h3 class="mt-3">Stay Organized</h3>
+            <p>Keep track of tasks and never miss a deadline.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-clock-history display-3 text-warning"></i>
+            <h3 class="mt-3">Track Progress</h3>
+            <p>Mark tasks as in-progress or done, all in one place.</p>
+        </div>
+        <div class="col-md-4">
+            <i class="bi bi-lightbulb display-3 text-info"></i>
+            <h3 class="mt-3">Boost Productivity</h3>
+            <p>Stay focused and improve your daily workflow.</p>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,143 @@
+﻿@model IEnumerable<TodoMVCApp.Models.TodoItem>
+
+@{
+    ViewData["Title"] = "TODO List";
+}
+<style>
+   
+    td.truncate-text {
+        max-width: 200px; 
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<h1>My TODO Tasks:</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">+ Add New Todo</a>
+</p>
+<form asp-controller="TodoItems" asp-action="Index" method="get">
+    <p>
+        <input type="text" name="searchString" placeholder="Search todos..." class="form-control" style="width:300px;display:inline-block" />
+        <input type="submit" value="Search" class="btn btn-secondary" />
+    </p>
+</form>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <a class="text-black" asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParam"]">
+                    @Html.DisplayNameFor(model => model.Title)
+                </a>
+            </th>
+                <th class="d-none d-md-table-cell">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                <a class="text-black" asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParam"]">
+                    @Html.DisplayNameFor(model => model.DueDate)
+                </a>
+            </th>
+            <th class="d-none d-md-table-cell">
+                @Html.DisplayNameFor(model => model.InProcess)
+            </th>
+            <th>
+                <a class="text-black" asp-action="Index" asp-route-sortOrder="@ViewData["StatusSortParam"]">
+                    @Html.DisplayNameFor(model => model.IsDone)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if(!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">
+                        <i class="bg-info bg-info-inbox fs-3"></i><br/>
+                        <span>No TODOs found.</span>
+                    </td>
+                </tr>
+            }
+            else
+            {
+            @foreach (var item in Model) 
+            {
+                var overdueClass = item.DueDate < DateTime.Now && !item.IsDone ? "table-danger" : "";
+                <tr class="@overdueClass">
+                        <td class="truncate-text">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td class="d-none d-md-table-cell truncate-text">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                            <td>
+                            @if (item.DueDate < DateTime.Now && !item.IsDone)
+                            {
+                                <span class="text-danger fw-bold">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    @item.DueDate.ToString("g")
+                                </span>
+                            }
+                            else
+                            {
+                                @item.DueDate.ToString("g")
+                            }
+                        </td>
+
+                            <td class="d-none d-md-table-cell">
+                            @if (item.InProcess)
+                            {
+                                <span class="badge bg-info text-dark"><i class="bi bi-hourglass-split"></i> In Process</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary"><i class="bi bi-hourglass"></i> Not Started</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.IsDone)
+                            {
+                                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Done</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Pending</span>
+                            }
+                        </td>
+
+                        <td class="d-sm-flex flex-wrap gap-2">
+
+                                <!-- EDIT Button: visible from md and up -->
+                                <a class="btn btn-warning btn-sm d-none d-md-flex align-items-center" asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class="bi bi-pencil me-1"></i> Edit
+                                </a>
+                                <!-- ICON ONLY: visible below md -->
+                                <a class="btn btn-warning btn-sm d-md-none" asp-action="Edit" asp-route-id="@item.Id" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <!-- DETAILS Button -->
+                                <a class="btn btn-primary btn-sm d-none d-md-flex align-items-center" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-info-circle me-1"></i> Details
+                                </a>
+                                <a class="btn btn-primary btn-sm d-md-none" asp-action="Details" asp-route-id="@item.Id" title="Details">
+                                    <i class="bi bi-info-circle"></i>
+                                </a>
+
+                                <!-- DELETE Button -->
+                                <a class="btn btn-danger btn-sm d-none d-md-flex align-items-center" asp-action="Delete" asp-route-id="@item.Id">
+                                    <i class="bi bi-trash me-1"></i> Delete
+                                </a>
+                                <a class="btn btn-danger btn-sm d-md-none" asp-action="Delete" asp-route-id="@item.Id" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                        </td>
+                </tr>
+        }}
+    </tbody>
+</table>
+</div>

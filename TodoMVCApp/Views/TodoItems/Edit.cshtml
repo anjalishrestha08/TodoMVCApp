@@ -1,0 +1,85 @@
+﻿@model TodoMVCApp.Models.TodoItem
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="mb-4 text-warning">Edit Task</h1>
+
+<div class="row justify-content-center">
+    <div class="card shadow-sm rounded-3 p-4 col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Title -->
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-bold"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label fw-bold"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mb-3">
+                <label asp-for="DueDate" class="form-label fw-bold"></label>
+                <input asp-for="DueDate" class="form-control" type="datetime-local"
+                       value="@Model.DueDate.ToString("yyyy-MM-ddTHH:mm")" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+
+
+            <!-- Status -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Status</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="InProcess" id="inProcess" />
+                    <label class="form-check-label" for="inProcess">In Process</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" asp-for="IsDone" id="isDone" />
+                    <label class="form-check-label" for="isDone">Done</label>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-grid">
+                <button type="submit" class="btn btn-warning btn-lg">
+                    <i class="bi bi-pencil-square me-1"></i> Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Back to List
+    </a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        const inProcessCheckbox = document.getElementById('inProcess');
+        const isDoneCheckbox = document.getElementById('isDone');
+
+        function toggleIsDone() {
+            if (!inProcessCheckbox.checked) {
+                isDoneCheckbox.checked = false;
+                isDoneCheckbox.disabled = true;
+            } else {
+                isDoneCheckbox.disabled = false;
+            }
+        }
+
+        inProcessCheckbox.addEventListener('change', toggleIsDone);
+        toggleIsDone();
+    </script>
+}
